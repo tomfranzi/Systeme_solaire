@@ -1,0 +1,44 @@
+﻿<Window x:Class="Systeme_solaire.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Systeme_solaire"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Informations Système">
+                <StackPanel Margin="10">
+                    <TextBlock FontWeight="Bold" FontSize="16" Text="Informations sur le Système Solaire" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Nom de la Planète: "/>
+                    <TextBlock x:Name="NameTextBlock" Text="Nom de la Planète" FontWeight="Bold"/>
+
+                    <TextBlock Text="Nombre d'objets connus: "/>
+                    <TextBlock x:Name="KnownCountTextBlock" Text="0" FontWeight="Bold"/>
+
+                    <TextBlock Text="Masse: "/>
+                    <TextBlock x:Name="MassTextBlock" Text="0" FontWeight="Bold"/>
+
+                    <TextBlock Text="Gravité: "/>
+                    <TextBlock x:Name="GravityTextBlock" Text="0" FontWeight="Bold"/>
+
+                    <TextBlock Text="Température Moyenne: "/>
+                    <TextBlock x:Name="AvgTempTextBlock" Text="0" FontWeight="Bold"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Détails sur les Lunes">
+                <StackPanel Margin="10">
+                    <TextBlock FontWeight="Bold" FontSize="16" Text="Lunes et Satellites" Margin="0,0,0,10"/>
+                    <!-- Ajoute ici d'autres informations concernant les lunes et satellites -->
+                    <TextBlock Text="Lune 1: "/>
+                    <TextBlock x:Name="Moon1TextBlock" Text="Lune 1 Info" FontWeight="Bold"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <Button Content="Charger Données" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10" Click="LoadDataButton_Click"/>
+    </Grid>
+</Window>
