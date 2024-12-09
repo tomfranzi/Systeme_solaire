@@ -26,6 +26,7 @@
 
                     <TextBlock Text="Température Moyenne: "/>
                     <TextBlock x:Name="AvgTempTextBlock" Text="0" FontWeight="Bold"/>
+                    
                 </StackPanel>
             </TabItem>
 
