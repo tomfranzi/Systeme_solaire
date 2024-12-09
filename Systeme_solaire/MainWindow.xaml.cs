@@ -70,15 +70,22 @@ namespace Systeme_solaire
 
         private void UpdateUIWithPlanetData(Root root)
         {
-            // Exemple pour afficher le nom, le nombre d'objets connus, la masse et la gravité
-            NameTextBlock.Text = root.Properties.Name?.type ?? "Inconnu";
-            KnownCountTextBlock.Text = root.Properties.KnownCount?.Value.ToString() ?? "0";
-            MassTextBlock.Text = root.Properties.Mass?.Value?.ToString() ?? "0";
-            GravityTextBlock.Text = root.Properties.Gravity?.Value?.ToString() ?? "0";
-            AvgTempTextBlock.Text = root.Properties.AvgTemp?.Value?.ToString() ?? "0";
+            if (root != null && root.Properties != null)
+            {
+                // Exemple pour afficher le nom, le nombre d'objets connus, la masse et la gravité
+                NameTextBlock.Text = root.Properties.name?.type ?? "Inconnu";
+                KnownCountTextBlock.Text = root.Properties.knownCount?.Value.ToString() ?? "0";
+                MassTextBlock.Text = root.Properties.mass?.type ?? "0";
+                GravityTextBlock.Text = root.Properties.gravity?.type ?? "0";
+                AvgTempTextBlock.Text = root.Properties.avgTemp?.type ?? "0";
+            }
+            else
+            {
+                // En cas de données manquantes
+                MessageBox.Show("Données non disponibles dans le Root ou ses propriétés.");
+            }
         }
-    }
-        
+
         public class _200
         {
             public string description { get; set; }
@@ -226,6 +233,7 @@ namespace Systeme_solaire
         public class Knowncount
         {
             public Get get { get; set; }
+            public int Value { get; set; }
         }
 
         public class Knowncount2
@@ -408,6 +416,7 @@ namespace Systeme_solaire
             public List<string> produces { get; set; }
             public List<Tag> tags { get; set; }
             public Paths paths { get; set; }
+            public Properties Properties { get; set; }
         }
 
         public class Schema
@@ -457,4 +466,5 @@ namespace Systeme_solaire
         {
             public string type { get; set; }
         }
+    }
 }
