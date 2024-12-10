@@ -29,60 +29,93 @@ namespace Systeme_solaire
 
         private async void LoadDataButton_Click(object sender, RoutedEventArgs e)
         {
-            // Exemple de chargement des données pour une planète (comme "Mars")
-            string cityName = "mars"; // Tu peux changer par la planète que tu veux chercher
-            await GetWeatherForCity(cityName);
+            // Récupérer la sélection de la planète ou de la lune
+            string selectedBody = (PlanetComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+            if (string.IsNullOrEmpty(selectedBody))
+            {
+                MessageBox.Show("Veuillez sélectionner une planète ou une lune.");
+                return;
+            }
+
+            // Récupérer les données de la planète ou lune sélectionnée
+            await GetPlanetData(selectedBody.ToLower());
         }
 
-        public async Task GetWeatherForCity(string cityName)
+        private async Task GetPlanetData(string bodyName)
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"https://api.le-systeme-solaire.net/rest/{cityName}");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(content))
-                {
-                    MessageBox.Show("Aucune donnée reçue.");
-                    return;
-                }
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync($"https://api.le-systeme-solaire.net/rest/bodies/{bodyName}");
 
-                Root root;
-                try
-                {
-                    root = JsonConvert.DeserializeObject<Root>(content);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erreur de désérialisation : {ex.Message}");
-                    return;
-                }
+                // Log pour vérifier la réponse
+                string content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Réponse brute de l'API : " + content);
 
-                // Mise à jour de l'interface utilisateur
-                UpdateUIWithPlanetData(root);
+                if (response.IsSuccessStatusCode)
+                {
+                    if (string.IsNullOrEmpty(content))
+                    {
+                        MessageBox.Show("Aucune donnée reçue.");
+                        return;
+                    }
+
+                    Root root = JsonConvert.DeserializeObject<Root>(content);
+
+                    if (root != null && root.Properties != null)
+                    {
+                        // Mise à jour de l'interface utilisateur avec les données extraites
+                        UpdateUIWithPlanetData(root.Properties);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Les données de la planète ne sont pas disponibles.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur de récupération des données : {response.StatusCode}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Erreur lors de la récupération des données.");
+                MessageBox.Show($"Erreur : {ex.Message}");
             }
         }
-
-        private void UpdateUIWithPlanetData(Root root)
+        private void PlanetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (root != null && root.Properties != null)
+            // Cette méthode est appelée lorsque l'utilisateur sélectionne un élément dans le ComboBox
+            // Si vous voulez effectuer une action lorsqu'un choix est effectué, vous pouvez le faire ici
+
+            // Par exemple, vous pouvez afficher la planète sélectionnée dans la console :
+            string selectedBody = (PlanetComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            Console.WriteLine($"Planète ou Lune sélectionnée : {selectedBody}");
+        }
+
+        private void UpdateUIWithPlanetData(Properties properties)
+        {
+            try
             {
-                // Exemple pour afficher le nom, le nombre d'objets connus, la masse et la gravité
-                NameTextBlock.Text = root.Properties.name?.type ?? "Inconnu";
-                KnownCountTextBlock.Text = root.Properties.knownCount?.Value.ToString() ?? "0";
-                MassTextBlock.Text = root.Properties.mass?.type ?? "0";
-                GravityTextBlock.Text = root.Properties.gravity?.type ?? "0";
-                AvgTempTextBlock.Text = root.Properties.avgTemp?.type ?? "0";
+                NameTextBlock.Text = properties.name?.type ?? "Inconnu";
+                KnownCountTextBlock.Text = properties.knownCount?.Value.ToString() ?? "0";
+                MassTextBlock.Text = $"{properties.mass?.properties?.massValue?.type ?? "0"} x 10^{properties.mass?.properties?.massExponent?.type ?? "0"} kg";
+                GravityTextBlock.Text = properties.gravity?.type ?? "0 m/s²";
+                AvgTempTextBlock.Text = $"{properties.avgTemp?.type ?? "0"} K";
+
+                // Affichage des lunes si elles existent
+                if (properties.moons != null && properties.moons.items != null)
+                {
+                    Moon1TextBlock.Text = properties.moons.items.properties?.name?.type ?? "Pas de lune";
+                }
+                else
+                {
+                    Moon1TextBlock.Text = "Aucune lune disponible";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // En cas de données manquantes
-                MessageBox.Show("Données non disponibles dans le Root ou ses propriétés.");
+                MessageBox.Show($"Erreur lors de la mise à jour de l'UI : {ex.Message}");
             }
         }
 

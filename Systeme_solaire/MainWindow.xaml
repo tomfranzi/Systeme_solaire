@@ -5,41 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Systeme_solaire"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="800">
+    <Grid Background="#282828">
         <TabControl>
-            <TabItem Header="Informations Système">
+            <!-- Informations Système -->
+            <TabItem Header="Informations Système" Background="#383838" Foreground="White">
                 <StackPanel Margin="10">
-                    <TextBlock FontWeight="Bold" FontSize="16" Text="Informations sur le Système Solaire" Margin="0,0,0,10"/>
+                    <TextBlock FontWeight="Bold" FontSize="20" Text="Informations sur le Système Solaire" Margin="0,0,0,10"/>
+                    <TextBlock Text="Choisir la Planète ou Lune : " FontSize="16" Margin="0,0,0,10"/>
+                    <ComboBox x:Name="PlanetComboBox" FontSize="16" SelectionChanged="PlanetComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Mars"/>
+                        <ComboBoxItem Content="Jupiter"/>
+                        <ComboBoxItem Content="Saturne"/>
+                        <ComboBoxItem Content="Lune"/>
+                        <ComboBoxItem Content="Titan"/>
+                        <ComboBoxItem Content="Europa"/>
+                        <!-- Ajouter plus de Planètes ou Lunes si nécessaire -->
+                    </ComboBox>
 
-                    <TextBlock Text="Nom de la Planète: "/>
-                    <TextBlock x:Name="NameTextBlock" Text="Nom de la Planète" FontWeight="Bold"/>
+                    <Button Content="Charger Données" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,20,10,10" Click="LoadDataButton_Click" FontSize="16"/>
 
-                    <TextBlock Text="Nombre d'objets connus: "/>
-                    <TextBlock x:Name="KnownCountTextBlock" Text="0" FontWeight="Bold"/>
+                    <!-- Affichage des Données -->
+                    <TextBlock Text="Nom de la Planète: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="NameTextBlock" FontSize="16" FontWeight="Bold"/>
 
-                    <TextBlock Text="Masse: "/>
-                    <TextBlock x:Name="MassTextBlock" Text="0" FontWeight="Bold"/>
+                    <TextBlock Text="Nombre d'objets connus: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="KnownCountTextBlock" FontSize="16" FontWeight="Bold"/>
 
-                    <TextBlock Text="Gravité: "/>
-                    <TextBlock x:Name="GravityTextBlock" Text="0" FontWeight="Bold"/>
+                    <TextBlock Text="Masse: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="MassTextBlock" FontSize="16" FontWeight="Bold"/>
 
-                    <TextBlock Text="Température Moyenne: "/>
-                    <TextBlock x:Name="AvgTempTextBlock" Text="0" FontWeight="Bold"/>
-                    
-                </StackPanel>
-            </TabItem>
+                    <TextBlock Text="Gravité: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="GravityTextBlock" FontSize="16" FontWeight="Bold"/>
 
-            <TabItem Header="Détails sur les Lunes">
-                <StackPanel Margin="10">
-                    <TextBlock FontWeight="Bold" FontSize="16" Text="Lunes et Satellites" Margin="0,0,0,10"/>
-                    <!-- Ajoute ici d'autres informations concernant les lunes et satellites -->
-                    <TextBlock Text="Lune 1: "/>
-                    <TextBlock x:Name="Moon1TextBlock" Text="Lune 1 Info" FontWeight="Bold"/>
+                    <TextBlock Text="Température Moyenne: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="AvgTempTextBlock" FontSize="16" FontWeight="Bold"/>
+
+                    <!-- Affichage des Lunes -->
+                    <TextBlock Text="Lune 1: " FontSize="16" Margin="0,5"/>
+                    <TextBlock x:Name="Moon1TextBlock" FontSize="16" FontWeight="Bold"/>
                 </StackPanel>
             </TabItem>
         </TabControl>
-
-        <Button Content="Charger Données" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10" Click="LoadDataButton_Click"/>
     </Grid>
 </Window>
