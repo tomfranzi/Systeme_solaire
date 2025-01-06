@@ -87,7 +87,22 @@ namespace SolarSystemApp
         {
             LoadData();
         }
-    
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+            MyMediaElement.Play();
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            MyMediaElement.Pause();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            MyMediaElement.Stop();
+        }
+
         public class AroundPlanet
         {
             public string planet { get; set; }

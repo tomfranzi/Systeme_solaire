@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Systeme_solaire"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="10">
+    <Grid Margin="0,10,10,10">
 
         <!-- Définition des lignes et colonnes -->
         <Grid.RowDefinitions>
@@ -16,15 +16,27 @@
             <!-- Liste des données -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30*"/>
             <!-- Liste -->
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="49*"/>
             <!-- Détails -->
         </Grid.ColumnDefinitions>
 
+        <MediaElement x:Name="MyMediaElement"
+                      Source="son/son.mp3"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Stop"
+                      Volume="0.9" />
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Content="Play" Width="75" Click="Play_Click" />
+            <Button Content="Pause" Width="75" Click="Pause_Click" />
+            <Button Content="Stop" Width="75" Click="Stop_Click" />
+        </StackPanel>
+
         <!-- Barre de recherche -->
         <TextBox x:Name="SearchBox" 
-                 Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Grid.Row="0" Grid.Column="0"
                  Margin="0,0,0,10"
                  Width="200" 
                  HorizontalAlignment="Left"
@@ -38,7 +50,7 @@
                   SelectionChanged="BodiesListView_SelectionChanged"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
-                  SelectionMode="Single">
+                  SelectionMode="Single" Margin="0,0,7,0">
 
             <!-- Colonnes -->
             <DataGrid.Columns>
@@ -52,23 +64,26 @@
         <StackPanel x:Name="DetailsPanel"
                     Grid.Row="1" Grid.Column="1"
                     Margin="10,0,0,0"
-                    VerticalAlignment="Top">
-            <TextBlock Text="Détails" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
-            <TextBlock x:Name="NameText" Text="Nom :" Margin="0,5"/>
-            <TextBlock x:Name="EnglishNameText" Text="Nom en anglais :" Margin="0,5"/>
-            <TextBlock x:Name="BodyTypeText" Text="Type :" Margin="0,5"/>
-            <TextBlock x:Name="GravityText" Text="Gravité :" Margin="0,5"/>
-            <TextBlock x:Name="RadiusText" Text="Rayon moyen :" Margin="0,5"/>
-            <TextBlock x:Name="DiscoveredByText" Text="Découverte par :" Margin="0,5"/>
-            <TextBlock x:Name="DiscoveryDateText" Text="Date de découverte :" Margin="0,5"/>
+                    VerticalAlignment="Top" Height="213">
+            <TextBlock Text="Détails" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" Foreground="White"/>
+            <TextBlock x:Name="NameText" Text="Nom :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="EnglishNameText" Text="Nom en anglais :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="BodyTypeText" Text="Type :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="GravityText" Text="Gravité :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="RadiusText" Text="Rayon moyen :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="DiscoveredByText" Text="Découverte par :" Margin="0,5" Foreground="White"/>
+            <TextBlock x:Name="DiscoveryDateText" Text="Date de découverte :" Margin="0,5" Foreground="White"/>
         </StackPanel>
 
         <!-- Bouton pour actualiser la liste -->
         <Button x:Name="RefreshButton"
-                Grid.Row="0" Grid.Column="1"
-                HorizontalAlignment="Right"
+                Grid.Row="1" Grid.Column="1"
+                HorizontalAlignment="Left"
                 Width="120" Content="Actualiser la liste"
-                Click="RefreshButton_Click"/>
-
+                Click="RefreshButton_Click" Margin="360,10,0,327"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="Background/back.jpg" />
+        </Grid.Background>
+        
     </Grid>
 </Window>
