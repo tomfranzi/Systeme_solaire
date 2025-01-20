@@ -77,6 +77,9 @@ namespace SolarSystemApp
                 BodyTypeText.Text = $"Type : {selectedBody.bodyType}";
                 GravityText.Text = $"Gravité : {selectedBody.gravity} m/s²";
                 RadiusText.Text = $"Rayon moyen : {selectedBody.meanRadius} km";
+                MassText.Text = $"Masse : {selectedBody.mass?.massValue} x 10^{selectedBody.mass?.massExponent} kg";
+                VolumeText.Text = $"Volume : {selectedBody.vol?.volValue} x 10^{selectedBody.vol?.volExponent} km³";
+                DensityText.Text = $"Densité : {selectedBody.density} g/cm³";
                 DiscoveredByText.Text = $"Découverte par : {selectedBody.discoveredBy}";
                 DiscoveryDateText.Text = $"Date de découverte : {selectedBody.discoveryDate}";
             }
@@ -87,6 +90,53 @@ namespace SolarSystemApp
         {
             LoadData();
         }
+
+        // Bouton pour ajouter aux favoris
+        private void AddToFavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (BodiesListView.SelectedItem is Body selectedBody)
+            {
+                // Vérifier si le favori n'est pas déjà dans la liste
+                if (!FavoritesList.Items.Contains(selectedBody))
+                {
+                    FavoritesList.Items.Add(selectedBody);
+                    MessageBox.Show($"{selectedBody.name} a été ajouté aux favoris !");
+                }
+                else
+                {
+                    MessageBox.Show($"{selectedBody.name} est déjà dans les favoris.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un corps céleste à ajouter aux favoris.");
+            }
+        }
+        private void RemoveFavoriteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FavoritesList.SelectedItem is Body selectedFavorite)
+            {
+                FavoritesList.Items.Remove(selectedFavorite);
+                MessageBox.Show($"{selectedFavorite.name} a été retiré des favoris !");
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un favori à supprimer.");
+            }
+        }
+
+        private void ShowDetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            DetailsPanel.Visibility = Visibility.Visible;
+            FavoritesPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowFavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+            DetailsPanel.Visibility = Visibility.Collapsed;
+            FavoritesPanel.Visibility = Visibility.Visible;
+        }
+
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
@@ -116,9 +166,9 @@ namespace SolarSystemApp
             public string englishName { get; set; }
             public bool isPlanet { get; set; }
             public object moons { get; set; }
-            public long semimajorAxis { get; set; } 
-            public long perihelion { get; set; }     
-            public long aphelion { get; set; }       
+            public long semimajorAxis { get; set; }
+            public long perihelion { get; set; }
+            public long aphelion { get; set; }
             public double eccentricity { get; set; }
             public double inclination { get; set; }
             public Mass mass { get; set; }
