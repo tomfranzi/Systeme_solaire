@@ -43,7 +43,7 @@
 
                  TextChanged="SearchBox_TextChanged"/>
 
-        <!-- DataGrid pour afficher les corps célestes -->
+        <!-- DataGrid pour afficher corps célestes -->
         <DataGrid x:Name="BodiesListView"
                   Grid.Row="1" Grid.Column="0"
                   AutoGenerateColumns="False"
@@ -53,12 +53,12 @@
                   SelectionMode="Single" Margin="0,0,7,0">
 
             <!-- Colonnes -->
-            <DataGrid.Columns>
+            <!--<DataGrid.Columns>
                 <DataGridTextColumn Header="Nom" Binding="{Binding name}" Width="*"/>
                 <DataGridTextColumn Header="Nom en anglais" Binding="{Binding englishName}" Width="*"/>
                 <DataGridTextColumn Header="Type de corps" Binding="{Binding bodyType}" Width="*"/>
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid>-->
 
         <!-- StackPanel pour les détails de l'objet sélectionné -->
         <StackPanel x:Name="DetailsPanel"
