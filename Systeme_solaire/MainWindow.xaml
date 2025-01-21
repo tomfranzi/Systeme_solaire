@@ -27,6 +27,23 @@
                  Background="#1E1E1E" Foreground="White"
                  TextChanged="SearchBox_TextChanged" />
 
+        <!-- Filtre par type de corps céleste -->
+        <ComboBox x:Name="BodyTypeFilter"
+                  Grid.Row="0" Grid.Column="0"
+                  Margin="360,0,10,10"
+                  Width="200"
+                  FontSize="16"
+                  Background="White" Foreground="Black"
+                  SelectionChanged="BodyTypeFilter_SelectionChanged">
+            <ComboBoxItem Content="Tous" IsSelected="True"/>
+            <ComboBoxItem Content="Planet"/>
+            <ComboBoxItem Content="Moon"/>
+            <ComboBoxItem Content="Asteroid"/>
+            <ComboBoxItem Content="Comet"/>
+            <ComboBoxItem Content="Dwarf Planet"/>
+            <ComboBoxItem Content="Star"/>
+        </ComboBox>
+
         <!-- Bouton Actualiser -->
         <Button x:Name="RefreshButton"
                 Grid.Row="0" Grid.Column="1"
@@ -74,7 +91,7 @@
                 <TextBlock x:Name="MassText" Text="Masse :" Foreground="White" FontSize="16" Margin="0,5"/>
                 <TextBlock x:Name="VolumeText" Text="Volume :" Foreground="White" FontSize="16" Margin="0,5"/>
                 <TextBlock x:Name="DensityText" Text="Densité :" Foreground="White" FontSize="16" Margin="0,5"/>
-                <TextBlock x:Name="DiscoveredByText" Text="Découvert par :" Foreground="White" FontSize="16" Margin="0,5"/>
+                <TextBlock x:Name="DiscoveredByText" Text="Découverte par :" Foreground="White" FontSize="16" Margin="0,5"/>
                 <TextBlock x:Name="DiscoveryDateText" Text="Date de découverte :" Foreground="White" FontSize="16" Margin="0,5"/>
                 <Button x:Name="AddToFavoritesButton"
                         Content="Ajouter aux Favoris"

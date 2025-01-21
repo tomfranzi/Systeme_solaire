@@ -18,44 +18,60 @@ using Newtonsoft.Json;
 
 namespace SolarSystemApp
 {
-
     public partial class MainWindow : Window
     {
         // URL de l'API
         private const string ApiUrl = "https://api.le-systeme-solaire.net/rest/bodies/";
         private List<Body> allBodies; // Pour stocker toutes les données récupérées
+        private bool isDataLoaded = false; // Indique si les données sont chargées
 
         public MainWindow()
         {
             InitializeComponent();
+
+            // Charger les données avant d'attacher les événements
             LoadData();
+
+            // Attacher les événements après l'initialisation
+            BodyTypeFilter.SelectionChanged += BodyTypeFilter_SelectionChanged;
         }
 
         // Méthode pour charger les données de l'API
         private async void LoadData()
         {
+            BodyTypeFilter.IsEnabled = false; // Désactiver la ComboBox avant le chargement
+
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    // Appel de l'API
                     var response = await client.GetStringAsync(ApiUrl);
                     var data = JsonConvert.DeserializeObject<Root>(response);
 
-                    // Stocker les données et les afficher dans le DataGrid
                     allBodies = data?.bodies;
-                    BodiesListView.ItemsSource = allBodies;
+                    BodiesListView.ItemsSource = allBodies; // Initialiser la DataGrid
                 }
+
+                isDataLoaded = true; // Marquer les données comme chargées
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur lors du chargement des données : {ex.Message}");
+            }
+            finally
+            {
+                BodyTypeFilter.IsEnabled = true; // Réactiver la ComboBox après le chargement
             }
         }
 
         // Événement déclenché lors de la saisie dans la barre de recherche
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!isDataLoaded || BodiesListView == null)
+            {
+                return;
+            }
+
             var searchText = SearchBox.Text.ToLower();
 
             // Filtrer les données selon le texte saisi
@@ -87,6 +103,32 @@ namespace SolarSystemApp
             }
         }
 
+        // Filtrage par type de corps céleste
+        private void BodyTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isDataLoaded || BodiesListView == null)
+            {
+                MessageBox.Show("Les données ne sont pas encore chargées ou l'interface utilisateur n'est pas prête.");
+                return;
+            }
+
+            if (BodyTypeFilter.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedType = selectedItem.Content.ToString();
+
+                // Filtrer les corps célestes selon le type sélectionné
+                if (selectedType == "Tous")
+                {
+                    BodiesListView.ItemsSource = allBodies; // Afficher tous les corps célestes
+                }
+                else
+                {
+                    var filteredBodies = allBodies?.Where(body => body.bodyType.Equals(selectedType, StringComparison.OrdinalIgnoreCase)).ToList();
+                    BodiesListView.ItemsSource = filteredBodies;
+                }
+            }
+        }
+
         // Événement déclenché lorsque le bouton d'actualisation est cliqué
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
@@ -114,6 +156,7 @@ namespace SolarSystemApp
                 MessageBox.Show("Veuillez sélectionner un corps céleste à ajouter aux favoris.");
             }
         }
+
         private void RemoveFavoriteButton_Click(object sender, RoutedEventArgs e)
         {
             if (FavoritesList.SelectedItem is Body selectedFavorite)
@@ -138,7 +181,6 @@ namespace SolarSystemApp
             DetailsPanel.Visibility = Visibility.Collapsed;
             FavoritesPanel.Visibility = Visibility.Visible;
         }
-
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
